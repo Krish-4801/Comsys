@@ -1,5 +1,12 @@
 # COMSYS Hackathon Project: Image Classification & Face Verification
 
+**Team: Pet-a-Byte**
+
+**Contributors:**
+*   Aditya Anand
+*   Aitijya Ghosh
+*   Krish Das
+
 This repository contains the solutions for a two-part computer vision challenge.
 *   **Task A:** A binary image classification problem using PyTorch and a ResNet-18 model.
 *   **Task B:** A face verification problem using a TensorFlow/Keras-based Siamese Network with a MobileNetV2 backbone.
@@ -207,3 +214,4 @@ Non-Match (0)       0.71      0.93      0.81      2000
     macro avg       0.81      0.78      0.77      4000
  weighted avg       0.81      0.78      0.77      4000
 ```
+
