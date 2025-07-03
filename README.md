@@ -7,6 +7,7 @@
 *   Aitijya Ghosh
 *   Krish Das
 
+
 This repository contains the solutions for a two-part computer vision challenge.
 *   **Task A:** A binary image classification problem using PyTorch and a ResNet-18 model.
 *   **Task B:** A face verification problem using a TensorFlow/Keras-based Siamese Network with a MobileNetV2 backbone.
@@ -63,7 +64,24 @@ This repository contains the solutions for a two-part computer vision challenge.
 
 ## Task A: Image Classification
 
-This task involves a binary classification model built with PyTorch to distinguish between two classes of images (e.g., real vs. spoof).
+**Objective:**  
+Classify the gender (Male/Female) of subjects from visually degraded face images.
+
+**Approach:**  
+A pre-trained **ResNet-18** model (PyTorch) is fine-tuned for binary classification. The final fully connected (FC) layer is replaced to output two classes. Input images are resized to 224×224 and normalized to ImageNet standards. The training loop tracks accuracy, precision, recall, and F1-score on the validation set.
+
+**Key Innovations:**
+- Lightweight ResNet18 backbone for speed and efficiency on degraded data.
+- Hyperparameter tuning for optimal learning rate and weight decay.
+- Comprehensive evaluation using precision, recall, and F1-score.
+
+**Architecture Summary:**
+- **Backbone:** ResNet18
+- **Input:** 224×224 RGB images, normalized
+- **Final Layer:** Replaced FC layer for 2-class output
+- **Loss Function:** CrossEntropyLoss
+- **Optimizer:** Adam (LR ≈ 3.28e-5, WD ≈ 6.62e-5)
+- **Evaluation:** Accuracy, Precision, Recall, F1-score
 
 ### Model
 
@@ -140,7 +158,26 @@ weighted avg       0.93      0.93      0.93       422
 
 ## Task B: Face Verification
 
-This task uses a Siamese Network built with TensorFlow/Keras to determine if two face images belong to the same person.
+
+**Objective:**  
+Match face images to identities using a few high-quality reference images and several distorted versions.
+
+**Approach:**  
+A **Siamese Network** is built with TensorFlow/Keras and `tf.distribute.MirroredStrategy` for multi-GPU training. The base network is a frozen MobileNetV2, extracting 128-dimensional L2-normalized embeddings from 160×160 images. Training data consists of positive (same identity) and negative (different identities) image pairs, generated automatically.
+
+**Key Innovations:**
+- Efficient, reproducible pair generation pipeline.
+- Embedding-based matching for few-shot generalization.
+- Euclidean distance via Lambda layer for similarity scoring.
+- MobileNetV2 backbone for fast, compact inference.
+
+**Architecture Summary:**
+- **Embedding Network:** MobileNetV2 (frozen) → GlobalAveragePooling → Dense(128) → L2-Normalization
+- **Siamese Model:** Two shared embedding networks → Euclidean Distance (Lambda) → Dense(1, sigmoid)
+- **Input:** 160×160 RGB images
+- **Loss Function:** Binary Cross-Entropy
+- **Dataset:** Custom tf.data pipeline with balanced match/non-match pairs
+
 
 ### Model
 
@@ -214,4 +251,3 @@ Non-Match (0)       0.71      0.93      0.81      2000
     macro avg       0.81      0.78      0.77      4000
  weighted avg       0.81      0.78      0.77      4000
 ```
-
